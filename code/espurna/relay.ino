@@ -522,6 +522,7 @@ void _relayWebSocketOnStart(JsonObject& root) {
         #if MQTT_SUPPORT
             line["group"] = getSetting("mqttGroup", i, "");
             line["group_inv"] = getSetting("mqttGroupInv", i, 0).toInt();
+            line["disc_react"] = getSetting("mqttDisconnectReaction",i,0).toInt();
         #endif
     }
 
@@ -730,6 +731,21 @@ void relayMQTTCallback(unsigned int type, const char * topic, const char * paylo
                 DEBUG_MSG_P(PSTR("[RELAY] Matched group topic for relayID %d\n"), i);
                 relayStatusWrap(i, value, true);
 
+            }
+        }
+
+    }
+    
+    if (type == MQTT_DISCONNECT_EVENT) {
+        for (unsigned int i=0; i < _relays.size(); i++){
+            int reaction = getSetting("mqttDisconnectReaction",i,0).toInt();
+            if (reaction == 1) {     // switch relay OFF
+                DEBUG_MSG_P(PSTR("[RELAY] Reset relay (%d) due to MQTT disconnection\n"), i);
+                relayStatusWrap(i, false, false);
+            }
+            else if(reaction == 2) { // switch relay ON
+                DEBUG_MSG_P(PSTR("[RELAY] Set relay (%d) due to MQTT disconnection\n"), i);
+                relayStatusWrap(i, true, false);
             }
         }
 

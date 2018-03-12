@@ -529,7 +529,7 @@
     #define RELAY2_TYPE         RELAY_TYPE_NORMAL
     #define RELAY3_TYPE         RELAY_TYPE_NORMAL
     #define RELAY4_TYPE         RELAY_TYPE_NORMAL
-
+//#define YUNSHAN_1CH_IN_RELAY
     // LEDs
     #define LED1_PIN            13
     #define LED1_PIN_INVERSE    1
@@ -1329,7 +1329,7 @@
 
     // Info
     #define MANUFACTURER        "ARILUX"
-    #define DEVICE              "E27"
+    #define DEVICE//#define YUNSHAN_1CH_IN_RELAY              "E27"
     #define RELAY_PROVIDER      RELAY_PROVIDER_LIGHT
     #define LIGHT_PROVIDER      LIGHT_PROVIDER_MY92XX
     #define DUMMY_RELAY_COUNT   1
@@ -1531,6 +1531,35 @@
     // Remove UART noise on serial line
     #define TERMINAL_SUPPORT        0
     #define DEBUG_SERIAL_SUPPORT    0
+
+//----------------------------------------------------------------------------
+// Yunshan 1ch input / 1 relays
+//----------------------------------------------------------------------------
+#elif defined(YUNSHAN_1CH_IN_RELAY)
+        // Info
+        #define MANUFACTURER        "YUNSHAN"
+        #define DEVICE              "1CH_IN_RELAY"
+
+        // Relays
+        #define RELAY1_PIN          4
+        #define RELAY1_TYPE         RELAY_TYPE_NORMAL
+
+        // Buttons
+        #define BUTTON1_PIN         5
+        #define BUTTON1_MODE        BUTTON_SWITCH | BUTTON_DEFAULT_HIGH | BUTTON_SET_PULLUP
+        #define BUTTON1_RELAY       1
+        #define BUTTON1_PRESS       BUTTON_MODE_ON
+        #define BUTTON1_CLICK       BUTTON_MODE_OFF
+
+    // Inputs alternatively to Buttons
+    //    #define INPUT1_PIN          5
+    //    #define INPUT1_MODE         GEN_INPUT_SET_PULLUP | GEN_INPUT_DEFAULT_HIGH
+    //    #define INPUT1_FILTER       100
+
+        // LEDs
+        #define LED1_PIN            2
+        #define LED1_PIN_INVERSE    1
+        #define LED1_MODE           LED_MODE_WIFI
 
 #endif
 

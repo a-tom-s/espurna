@@ -6,3 +6,5 @@
 core_version.h
 .pioenvs
 .piolibdeps
+.travis.yml
+

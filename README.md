@@ -16,6 +16,43 @@ It uses the Arduino Core for ESP8266 framework and a number of 3rd party librari
 
 ---
 
+## Fork features by a-tom-s
+      
+ * MQTT diconnection: configure for each relay the corresponding reaction for the case that the 
+   connection is interrupted. For example, you opened a valve by the relay, that it could be useful to close
+   it if you home automation server looses control because of connection loss<br>
+   Possible reactions: keep relay state, switch relay OFF, switch relay ON
+
+ * BUTTON_SWITCH type creates now click and release event instead of state changed, so
+   the button action can better identified within the MQTT event
+   
+   configuration example:
+   With this configuration you will get a MQTT message with payload "1" for pressing button 
+   and a payload "0" for release.
+   The original fork sends for both action a payload of "2" for changed button state.<br>
+   ```
+   #define BUTTON1_MODE        BUTTON_SWITCH<br>
+   #define BUTTON1_PRESS       BUTTON_MODE_ON<br>
+   #define BUTTON1_CLICK       BUTTON_MODE_OFF<br>
+
+ * new type INPUT as alternative to BUTTON, because some modules have a generic input and
+   no button. So the button actions like long click and double click don't make sense (and must not be used!).
+   Additionally, there is an configurable input filter to remove any input jitter on rising
+   or falling edge and can selected by filter time (in ms) individual per input.<br>
+   Inputs are shown with keyword 'input' in the MQTT message.<br>
+   configuration example:<br>
+   ```
+   // Inputs alternatively to Buttons
+   #define INPUT1_PIN          5
+   #define INPUT1_MODE         GEN_INPUT_SET_PULLUP | GEN_INPUT_DEFAULT_HIGH
+   #define INPUT1_FILTER       100
+
+
+ * Additional hardware configuration for a Yunshan module with one input and one relay<br>
+   The configuration for the input can be changed to use button or generic input functionality.
+
+
+
 ## Features
 
 * *KRACK* vulnerability free (when built against Arduino Core 2.4.0)

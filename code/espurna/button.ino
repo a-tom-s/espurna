@@ -69,12 +69,15 @@ uint8_t mapEvent(uint8_t event, uint8_t count, uint16_t length) {
     if (event == EVENT_PRESSED) return BUTTON_EVENT_PRESSED;
     if (event == EVENT_CHANGED) return BUTTON_EVENT_CLICK;
     if (event == EVENT_RELEASED) {
-        if (count == 1) {
+        if (count == 0) {                       // required for BUTTON_SWITCH type only
+            return BUTTON_EVENT_RELEASED;
+        }
+        else if (count == 1) {
             if (length > BUTTON_LNGLNGCLICK_DELAY) return BUTTON_EVENT_LNGLNGCLICK;
             if (length > BUTTON_LNGCLICK_DELAY) return BUTTON_EVENT_LNGCLICK;
             return BUTTON_EVENT_CLICK;
         }
-        if (count == 2) return BUTTON_EVENT_DBLCLICK;
+        else if (count == 2) return BUTTON_EVENT_DBLCLICK;
     }
 }
 
